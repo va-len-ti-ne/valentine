@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<title>Örökké 💍❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing:border-box; }
+body {
+    margin:0;
+    height:100vh;
+    font-family:'Segoe UI',sans-serif;
+    background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+    overflow:hidden;
+}
+
+.page { display:none; height:100vh; width:100%; justify-content:center; align-items:center; padding:20px; }
+.active { display:flex; }
+
+.container {
+    background:rgba(255,255,255,0.96);
+    padding:30px 22px;
+    border-radius:25px;
+    text-align:center;
+    max-width:430px;
+    width:100%;
+    box-shadow:0 20px 40px rgba(0,0,0,0.25);
+}
+
+h1 { color:#e63946; margin-bottom:15px; }
+
+.question { font-size:21px; font-weight:bold; color:#b11226; animation:pulse 2s infinite; margin-bottom:20px; }
+
+@keyframes pulse {0%{transform:scale(1);}50%{transform:scale(1.05);}100%{transform:scale(1);}}
+
+.message { font-family:'Dancing Script',cursive; font-size:20px; line-height:1.7; color:#3b1d1d; text-align:left; white-space:pre-wrap; min-height:200px; }
+
+.cursor { display:inline-block; width:8px; background:#b11226; margin-left:3px; animation:blink 1s infinite; }
+@keyframes blink {0%,50%{opacity:1;}51%,100%{opacity:0;}}
+
+.signature, .date { font-family:'Dancing Script',cursive; text-align:right; display:none; }
+.signature { margin-top:20px; font-size:22px; font-weight:600; color:#b11226; }
+.date { margin-top:6px; font-size:16px; color:#5a2a2a; }
+
+button { width:100%; padding:15px; font-size:18px; border:none; border-radius:30px; cursor:pointer; margin-top:15px; background:#e63946; color:white; }
+
+#noBtn { position:absolute; background:#ffb4a2; color:#5a1a01; width:220px; }
+
+textarea { width:100%; min-height:180px; padding:15px; border-radius:15px; border:1px solid #ddd; font-size:16px; resize:none; }
+
+.heart { position:absolute; font-size:22px; animation:float 5s linear infinite; opacity:0.8; }
+@keyframes float { from{transform:translateY(100vh);} to{transform:translateY(-10vh);} }
+</style>
+</head>
+
+<body>
+
+<!-- 0. ÚJ NYITÓ OLDAL -->
+<div class="page active" id="page0">
+    <div class="container">
+        <div class="question">
+            Mielőtt neki kezdenénk mindennek,<br>
+            szeretném látni a reakciódat! ❤️
+        </div>
+        <p style="color:#5a2a2a; font-size:16px;">
+            Sokat cseszekedtem veled, és érdekel,<br>
+            hogyan reagálsz rá.<br><br>
+            Ha úgy érzed, készen állsz kamerával<br>
+            bejönni hozzám, akkor tudasd velem.<br><br>
+            <strong>Nem kötelező!</strong>
+        </p>
+        <button id="toDecision">Tovább 💕</button>
+    </div>
+</div>
+
+<!-- 0/B KÖZTES OLDAL -->
+<div class="page" id="page0b">
+    <div class="container">
+        <div class="question">
+            Most, hogy tudattad,<br>
+            hogyan döntöttél ❤️
+        </div>
+        <p style="color:#5a2a2a;">
+            Szeretném, ha tovább mennél…
+        </p>
+        <button id="toPage1">Tovább 💖</button>
+    </div>
+</div>
+
+<!-- 1. OLDAL -->
+<div class="page" id="page1">
+    <div class="container">
+        <div class="question">Elolvasod a levelet? ❤️</div>
+        <button id="readBtn">Elolvasom 💖</button>
+    </div>
+</div>
+<button id="noBtn">Nem olvasom el 🙈</button>
+
+<!-- 2. OLDAL -->
+<div class="page" id="page2">
+    <div class="container">
+        <div class="question">
+            Leszel örökre az én szerelmem,<br>
+            a férjem,<br>
+            a mindenem? 💍❤️
+        </div>
+        <button id="finalYes">IGEN 💖</button>
+    </div>
+</div>
+
+<!-- 3. OLDAL – LEVÉL -->
+<div class="page" id="page3">
+    <div class="container">
+        <h1>Drága szerelmem! ❤️</h1>
+        <div class="message" id="typedText"></div>
+        <span class="cursor" id="cursor"></span>
+        <div class="signature" id="signature">A te egyetlen Veronikád! ♥</div>
+        <div class="date" id="date">dátum: 2026.02.01.</div>
+        <button id="toMessage">Írj nekem ❤️</button>
+    </div>
+</div>
+
+<!-- 4. OLDAL – PRIVÁT ÜZENET + MENTÉS -->
+<div class="page" id="page4">
+    <div class="container">
+        <h1>Privát üzenet nekem 💌</h1>
+        <p>Írd le mindazt, amit érzel irántam… ❤️</p>
+        <textarea id="privateMsg" placeholder="Ide írd minden gondolatod, érzésed..."></textarea>
+        <button id="saveMsg">Mentsd el az üzenetem 💾</button>
+        <p style="font-size:14px; color:#777; margin-top:10px;">
+            (Ez az üzenet csak kettőnké ❤️)
+        </p>
+    </div>
+</div>
+
+<script>
+const page0=document.getElementById("page0");
+const page0b=document.getElementById("page0b");
+const page1=document.getElementById("page1");
+const page2=document.getElementById("page2");
+const page3=document.getElementById("page3");
+const page4=document.getElementById("page4");
+
+document.getElementById("toDecision").onclick=()=>{
+    page0.classList.remove("active");
+    page0b.classList.add("active");
+};
+document.getElementById("toPage1").onclick=()=>{
+    page0b.classList.remove("active");
+    page1.classList.add("active");
+};
+
+const noBtn=document.getElementById("noBtn");
+function moveNo(){
+    const a=Math.random()*Math.PI*2;
+    const r=120;
+    noBtn.style.left=(window.innerWidth/2+r*Math.cos(a)-110)+"px";
+    noBtn.style.top=(window.innerHeight/2+r*Math.sin(a)-25)+"px";
+}
+noBtn.addEventListener("mouseover",moveNo);
+noBtn.addEventListener("click",moveNo);
+
+document.getElementById("readBtn").onclick=()=>{
+    page1.classList.remove("active");
+    page2.classList.add("active");
+    noBtn.style.display="none";
+};
+document.getElementById("finalYes").onclick=()=>{
+    page2.classList.remove("active");
+    page3.classList.add("active");
+    typeText();
+};
+document.getElementById("toMessage").onclick=()=>{
+    page3.classList.remove("active");
+    page4.classList.add("active");
+};
+
+// Gépelős levél
+const text=`Huh azt hiszem nem tudok már mit mondani!
+Mindenemmel akarlak! Te vagy az életem, az egyetlen olyan dolog a világon ami mindennél többet jelent!
+Köszönöm, hogy itt vagy velem, hogy szeretsz, megvédesz, aggódsz értem!Köszönöm, hogy szerethetlek, hogy vigyázhatok rád!Nem tudom elégszer megköszönni azt,hogy vagy nekem! Azt hogy boldogabb vagyok mint valaha!Teljesen beléd szerettem! Bele bolondultam a szemeidbe, a mosolyodba, a nevetésedbe,
+az aggódásodba, a figyelmedbe, a szeretlek szavadba! A puszik amiket kapok akkora örömet okoznak,hogy nem tudod elhinni!Nagyon várom,hogy végre velem legyél, hogy együtt legyünk, hogy végre semmi ne választjon el minket, még a ruha sem állhat közénk!
+Mindennél jobban vágyom rád! A csókjaidra, az ölelésedre, a közelségedre, a tested melegére, MINDENEDRE!Nem érdekel, hogy mennyire vagy messze!Te vagy az otthonom, az életem, a mindenem!
+A férjem!Minden erőmmel azon vagyok,hogy velem maradj egy életen át! Soha semmiért sem foglak elhagyni, ezt jegyezd meg!
+Szeretlek!`;
+
+let i=0;
+function typeText(){
+    if(i<text.length){
+        document.getElementById("typedText").innerHTML+=text.charAt(i);
+        i++;
+        setTimeout(typeText,35);
+    } else {
+        document.getElementById("cursor").style.display="none";
+        document.getElementById("signature").style.display="block";
+        document.getElementById("date").style.display="block";
+    }
+}
+
+// Mentés gomb
+document.getElementById("saveMsg").onclick=()=>{
+    const text=document.getElementById("privateMsg").value.trim();
+    if(!text){ alert("Kérlek írj valamit az üzenetedbe! ❤️"); return; }
+    const blob=new Blob([text],{type:"text/plain"});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url;
+    a.download="Privát_üzenet.txt";
+    a.click();
+    URL.revokeObjectURL(url);
+};
+
+// Szívecskék
+setInterval(()=>{
+    for(let i=0;i<2;i++){
+        const h=document.createElement("div");
+        h.className="heart";
+        h.innerHTML="❤️";
+        h.style.left=Math.random()*100+"vw";
+        h.style.animationDuration=2+Math.random()*3+"s";
+        document.body.appendChild(h);
+        setTimeout(()=>h.remove(),6000);
+    }
+},300);
+</script>
+
+</body>
+</html>
+
